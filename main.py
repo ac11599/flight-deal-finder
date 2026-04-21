@@ -1,4 +1,3 @@
-# import secrets
 import os
 from dotenv import load_dotenv
 from data_manager import DataManager
