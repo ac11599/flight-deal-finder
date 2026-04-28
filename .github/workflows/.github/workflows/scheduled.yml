@@ -1,0 +1,32 @@
+name: Run Daily Script
+
+on:
+  schedule:
+    - cron: "0 13 * * *"   # runs every day at 13:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          MY_PASSWORD: ${{ secrets.MY_PASSWORD }}
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+          SHEETY_BEARER_TOKEN: ${{ secrets.SHEETY_BEARER_TOKEN }}
+          SHEETY_EMAILS_URL: ${{ secrets.SHEETY_EMAILS_URL }}
+          SHEETY_FLIGHTS_URL: ${{ secrets.SHEETY_FLIGHTS_URL }}
+        run: python main.py
